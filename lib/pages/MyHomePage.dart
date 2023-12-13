@@ -16,6 +16,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int cartItems = 5;
   bool _loading = false;
+  String textCategory = 'TODO';
   List<Category> categories = [];
   List<Widget> tabs = [];
   import() async {
@@ -39,6 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
     var categoriesBox = await Hive.openBox<Category>('categories');
     categories = categoriesBox.values.toList();
     tabs.clear();
+    tabs.add(
+      MyTab(icon: 'checkCircle'),
+    );
     categories.forEach((category) {
       tabs.add(
         MyTab(icon: category.icon),
@@ -88,14 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 children: [
                   Text(
-                    'Seleccione ',
+                    'Categoria ',
                     style: TextStyle(
                       fontSize: 18,
                       // fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'CATEGORIA',
+                    textCategory,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -123,6 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 24),
             TabBar(
+              onTap: (index) {
+                final i= index-1;
+                if(i == -1){
+                    textCategory = 'TODO';
+                }else{
+                  textCategory = categories[i].name;
+                }
+                setState(() {});
+              },
               tabs: tabs,
               labelColor: Colors.purple,
               unselectedLabelColor: Colors.grey[400],
