@@ -1,7 +1,16 @@
 import 'package:cafeitalia/pages/MyHomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+import 'models/Products.dart';
+import 'models/Category.dart';
+
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductAdapter());
+  Hive.registerAdapter(CategoryAdapter());
   runApp(const MyApp());
 }
 

@@ -1,5 +1,9 @@
+import 'package:cafeitalia/components/MyTab.dart';
+import 'package:cafeitalia/models/Category.dart';
+import 'package:cafeitalia/services/ImportService.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -11,14 +15,37 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int cartItems = 5;
-  List<Widget> tabs = [
-    Tab(
-      child: Icon(LineIcons.breadSlice, size: 36)
-    ),
-    Tab(
-        child: Icon(LineIcons.coffee, size: 36)
-    ),
-  ];
+  bool _loading = false;
+  List<Category> categories = [];
+  List<Widget> tabs = [];
+  import() async {
+    setState(() {
+      _loading = true;
+    });
+    final import = await ImportService().importDatos();
+    getDatos();
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  @override
+  initState() {
+    // TODO: implement initState
+    super.initState();
+    getDatos();
+  }
+  getDatos() async {
+    var categoriesBox = await Hive.openBox<Category>('categories');
+    categories = categoriesBox.values.toList();
+    tabs.clear();
+    categories.forEach((category) {
+      tabs.add(
+        MyTab(icon: category.icon),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -61,19 +88,36 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 children: [
                   Text(
-                    'Seleccionar una ',
+                    'Seleccione ',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       // fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'CATEGORIA',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  ElevatedButton(
+                    onPressed: _loading ? null : import,
+                    child: _loading? CircularProgressIndicator() : Text(
+                      'Import',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.purple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

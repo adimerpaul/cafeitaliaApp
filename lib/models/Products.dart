@@ -8,11 +8,11 @@ class Product {
   @HiveField(1)
   final String name;
   @HiveField(2)
-  final String price;
+  final double price;
   @HiveField(3)
-  final double imagen;
+  final String imagen;
   @HiveField(4)
-  final String cantidad;
+  final int cantidad;
   @HiveField(5)
   final int category_id;
 

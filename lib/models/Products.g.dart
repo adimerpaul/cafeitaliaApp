@@ -19,9 +19,9 @@ class ProductAdapter extends TypeAdapter<Product> {
     return Product(
       id: fields[0] as int,
       name: fields[1] as String,
-      price: fields[2] as String,
-      imagen: fields[3] as double,
-      cantidad: fields[4] as String,
+      price: fields[2] as double,
+      imagen: fields[3] as String,
+      cantidad: fields[4] as int,
       category_id: fields[5] as int,
     );
   }
