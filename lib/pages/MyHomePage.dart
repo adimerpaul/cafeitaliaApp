@@ -1,9 +1,11 @@
+import 'package:cafeitalia/components/MyCard.dart';
 import 'package:cafeitalia/components/MyTab.dart';
 import 'package:cafeitalia/models/Category.dart';
 import 'package:cafeitalia/models/Products.dart';
 import 'package:cafeitalia/services/ImportService.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,6 +16,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final url_back = dotenv.env['API_BACK'];
   int cartItems = 5;
   bool _loading = false;
   String textCategory = 'TODO';
@@ -165,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(24),
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
+                    crossAxisCount: 5,
                     childAspectRatio: 0.75,
                     crossAxisSpacing: 24,
                     mainAxisSpacing: 24,
@@ -176,58 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage('https://picsum.photos/250?image=9'),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        textCapitalization(products[index].name),
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        products[index].categoryName,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  '\Bs${products[index].price}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      child: MyCard(
+                        title: products[index].name,
+                        subtitle: products[index].categoryName,
+                        image: products[index].imagen,
+                        price: products[index].price.toString(),
+                        color: 'blue',
                       ),
                     );
                   },
