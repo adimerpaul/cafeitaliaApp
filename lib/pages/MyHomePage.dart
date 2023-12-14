@@ -165,27 +165,21 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
                 child: GridView.builder(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.all(10),
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
+                    crossAxisCount: 4,
                     childAspectRatio: 0.75,
                     crossAxisSpacing: 24,
-                    mainAxisSpacing: 24,
+                    mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: MyCard(
-                        title: products[index].name,
-                        subtitle: products[index].categoryName,
-                        image: products[index].imagen,
-                        price: products[index].price.toString(),
-                        color: 'blue',
-                      ),
+                    return MyCard(
+                      title: products[index].name,
+                      subtitle: products[index].categoryName,
+                      image: products[index].imagen,
+                      price: products[index].price.toString(),
+                      color: 'blue',
                     );
                   },
                 )

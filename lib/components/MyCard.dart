@@ -38,41 +38,41 @@ class MyCard extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      textCapitalization(title),
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Text(
-                '\Bs${price}',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(5.0),
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(
+        //               textCapitalization(title),
+        //               style: TextStyle(
+        //                 fontSize: 11,
+        //                 fontWeight: FontWeight.bold,
+        //               ),
+        //             ),
+        //             Text(
+        //               subtitle,
+        //               style: TextStyle(
+        //                 fontSize: 10,
+        //                 color: Colors.grey[600],
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       Text(
+        //         '\Bs${price}',
+        //         style: TextStyle(
+        //           fontSize: 16,
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
