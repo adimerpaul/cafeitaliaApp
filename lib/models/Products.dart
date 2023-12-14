@@ -17,6 +17,8 @@ class Product {
   final int category_id;
   @HiveField(6)
   final String categoryName;
+  @HiveField(7)
+  final String color;
 
   Product({
     required this.id,
@@ -26,5 +28,6 @@ class Product {
     required this.cantidad,
     required this.category_id,
     required this.categoryName,
+    required this.color,
   });
 }

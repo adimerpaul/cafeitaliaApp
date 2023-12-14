@@ -169,9 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    childAspectRatio: 0.75,
-                    crossAxisSpacing: 24,
-                    mainAxisSpacing: 10,
+                    // childAspectRatio: 0.75,
+                    // crossAxisSpacing: 24,
+                    // mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
                     return MyCard(
@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       subtitle: products[index].categoryName,
                       image: products[index].imagen,
                       price: products[index].price.toString(),
-                      color: 'blue',
+                      color: products[index].color,
                     );
                   },
                 )

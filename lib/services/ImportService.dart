@@ -34,6 +34,7 @@ class ImportService{
         cantidad: int.parse(product['cantidad'].toString()),
         category_id: int.parse(product['category_id'].toString()),
         categoryName: product['category']['name'].toString(),
+        color: product['color'].toString(),
         ));
       });
       return response.body;
