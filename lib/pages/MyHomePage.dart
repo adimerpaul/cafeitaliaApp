@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _loading = true;
     });
-    final import = await ImportService().importDatos();
+    await ImportService().importDatos();
     getDatos();
     setState(() {
       _loading = false;
@@ -169,6 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
+                    childAspectRatio: 1/1.2,
                     // childAspectRatio: 0.75,
                     // crossAxisSpacing: 24,
                     // mainAxisSpacing: 10,
