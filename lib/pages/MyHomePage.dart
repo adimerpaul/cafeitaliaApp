@@ -1,10 +1,10 @@
 import 'package:cafeitalia/components/MyTab.dart';
 import 'package:cafeitalia/models/Category.dart';
+import 'package:cafeitalia/models/Products.dart';
 import 'package:cafeitalia/services/ImportService.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:hive/hive.dart';
-import 'package:line_icons/line_icons.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -18,6 +18,8 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _loading = false;
   String textCategory = 'TODO';
   List<Category> categories = [];
+  List<Product> products = [];
+  List<Product> productsAll = [];
   List<Widget> tabs = [];
   import() async {
     setState(() {
@@ -48,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
         MyTab(icon: category.icon),
       );
     });
+    var productsBox = await Hive.openBox<Product>('products');
+    products = productsBox.values.toList();
+    setState(() {});
+  }
+  textCapitalization(String text){
+    text = text.toLowerCase();
+    return text[0].toUpperCase() + text.substring(1);
   }
 
   @override
@@ -151,6 +160,79 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Expanded(
+                child: GridView.builder(
+                  padding: EdgeInsets.all(24),
+                  itemCount: products.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 24,
+                    mainAxisSpacing: 24,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage('https://picsum.photos/250?image=9'),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        textCapitalization(products[index].name),
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        products[index].categoryName,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  '\Bs${products[index].price}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+            )
           ],
         ),
       ),
