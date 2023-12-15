@@ -55,11 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     var productsBox = await Hive.openBox<Product>('products');
     products = productsBox.values.toList();
+    products.sort((a, b) => a.category_id.compareTo(b.category_id));
+    productsAll = products;
     setState(() {});
-  }
-  textCapitalization(String text){
-    text = text.toLowerCase();
-    return text[0].toUpperCase() + text.substring(1);
   }
 
   @override

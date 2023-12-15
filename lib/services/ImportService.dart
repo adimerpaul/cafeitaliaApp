@@ -26,6 +26,7 @@ class ImportService{
         ));
       });
       products.forEach((product) async {
+        // print(product['id']);
         await productsBox.put(product['id'], Product(
         id: int.parse(product['id'].toString()),
         name: product['name'].toString(),

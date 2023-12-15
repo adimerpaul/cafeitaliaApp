@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class MyCard extends StatelessWidget {
   final double radius = 12;
   final String title;
@@ -67,6 +67,11 @@ class MyCard extends StatelessWidget {
         return Colors.white; // Color predeterminado si el nombre no coincide con ninguno de los anteriores
     }
   }
+  textCapitalization(String text){
+    text = text.toLowerCase();
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,13 +121,41 @@ class MyCard extends StatelessWidget {
                   horizontal: 24,
                   vertical: 12,
                 ),
-                child: Image.network(
-                  dotenv.env['API_BACK']!+'/../images/' + image,
+              child: CachedNetworkImage(
+                imageUrl: dotenv.env['API_BACK']! + '/../images/' + image,
+                placeholder: (context, url) => Container(
                   width: 100,
                   height: 100,
-                )
+                  color: Colors.grey, // Puedes personalizar el color o usar un icono en lugar de un contenedor
+                  child: Icon(Icons.image, color: Colors.white),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.red, // Puedes personalizar el color o usar un icono en lugar de un contenedor
+                  child: Icon(Icons.error, color: Colors.white),
+                ),
+                width: 100,
+                height: 100,
+              ),
             ),
             // Agrega aquí los demás widgets que necesitas para tu tarjeta (título, subtítulo, imagen, etc.)
+            Text(
+              textCapitalization(title),
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              textCapitalization(subtitle),
+              style: TextStyle(
+                fontSize: 10,
+                // fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
           ],
         ),
       ),
