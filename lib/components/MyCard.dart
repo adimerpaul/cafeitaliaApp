@@ -8,6 +8,7 @@ class MyCard extends StatelessWidget {
   final String image;
   final String price;
   final String color;
+  final int cantidadCarrito;
 
   const MyCard({
     Key? key,
@@ -16,6 +17,7 @@ class MyCard extends StatelessWidget {
     required this.image,
     required this.price,
     required this.color,
+    required this.cantidadCarrito,
   }) : super(key: key);
 
   Color getContainerColorFromString(String colorName) {
@@ -90,8 +92,30 @@ class MyCard extends StatelessWidget {
           children: [
             //badge
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                cantidadCarrito == 0 ? Container() :
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.yellowAccent, // Color con opacidad diferente
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(radius),
+                      topLeft: Radius.circular(radius),
+                    ),
+                  ),
+                  // padding: EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '$cantidadCarrito',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     color: badgeColor, // Color con opacidad diferente

@@ -17,7 +17,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final url_back = dotenv.env['API_BACK'];
-  int cartItems = 5;
+  int cartItems = 0;
+  double total = 0;
   bool _loading = false;
   String textCategory = 'TODO';
   int category_id = 0;
@@ -68,6 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
       products = productsAll.where((element) => element.category_id == category_id).toList();
     }
   }
+  cantidadPedida(){
+    cartItems = 0;
+    total = 0;
+    products.forEach((element) {
+      cartItems += element.cantidadCarrito;
+      total += element.cantidadCarrito * element.price;
+    });
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +95,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Total: Bs ${total}',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
-              child: badges.Badge(
+              child:
+              cartItems != 0 ?
+              badges.Badge(
                 position: badges.BadgePosition.topEnd(top: -10, end: -12),
                 badgeContent: Text(
                   cartItems.toString(),
@@ -100,6 +123,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.grey[900],
                   size: 36,
                 ),
+              ):
+              Icon(
+                Icons.shopping_cart,
+                color: Colors.grey[900],
+                size: 36,
               ),
             ),
           ],
@@ -136,6 +164,30 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.purple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: (){
+                        setState(() {
+                          products.forEach((element) {
+                            element.cantidadCarrito = 0;
+                          });
+                          cantidadPedida();
+                        });
+                      },
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -185,12 +237,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     // mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
-                    return MyCard(
-                      title: products[index].name,
-                      subtitle: products[index].categoryName,
-                      image: products[index].imagen,
-                      price: products[index].price.toString(),
-                      color: products[index].color,
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          products[index].cantidadCarrito++;
+                          cantidadPedida();
+                        });
+                      },
+                      child: MyCard(
+                        title: products[index].name,
+                        subtitle: products[index].categoryName,
+                        image: products[index].imagen,
+                        price: products[index].price.toString(),
+                        color: products[index].color,
+                        cantidadCarrito: products[index].cantidadCarrito,
+                      ),
                     );
                   },
                 )
