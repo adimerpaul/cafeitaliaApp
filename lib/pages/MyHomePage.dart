@@ -26,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Product> products = [];
   List<Product> productsAll = [];
   List<Widget> tabs = [];
+  int selectedMesa = 0;
   import() async {
     setState(() {
       _loading = true;
@@ -135,6 +136,39 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(8, (index) {
+                    return TextButton(
+                      onPressed: () {
+                        // print(index);
+                        setState(() {
+                          selectedMesa = index;
+                        });
+                      },
+                      child: Text(
+                        'Mesa ${index + 1}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: selectedMesa == index ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: selectedMesa == index ? Colors.purple : Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(left: 24.0),
               child: Row(
                 children: [
@@ -172,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ElevatedButton(
                       onPressed: (){
                         setState(() {
+                          filtrarCategoria(0);
                           products.forEach((element) {
                             element.cantidadCarrito = 0;
                           });
