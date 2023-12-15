@@ -20,6 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int cartItems = 5;
   bool _loading = false;
   String textCategory = 'TODO';
+  int category_id = 0;
   List<Category> categories = [];
   List<Product> products = [];
   List<Product> productsAll = [];
@@ -58,6 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
     products.sort((a, b) => a.category_id.compareTo(b.category_id));
     productsAll = products;
     setState(() {});
+  }
+
+  filtrarCategoria(int category_id){
+    if(category_id == 0){
+      products = productsAll;
+    }else{
+      products = productsAll.where((element) => element.category_id == category_id).toList();
+    }
   }
 
   @override
@@ -141,9 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 final i= index-1;
                 if(i == -1){
                     textCategory = 'TODO';
+                    category_id = 0;
                 }else{
                   textCategory = categories[i].name;
+                  category_id = categories[i].id;
                 }
+                filtrarCategoria(category_id);
                 setState(() {});
               },
               tabs: tabs,
