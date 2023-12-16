@@ -80,6 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     setState(() {});
   }
+  productConCarrito(List<Product> products){
+    List<Product> productsCarrito = [];
+    products.forEach((element) {
+      if(element.cantidadCarrito > 0){
+        productsCarrito.add(element);
+      }
+    });
+    return productsCarrito;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: [
             MyDialog(
               total: total,
+              mesa: selectedMesa+1,
+              products: productConCarrito(products)
             ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
