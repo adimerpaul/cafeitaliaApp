@@ -142,8 +142,8 @@ class MyCard extends StatelessWidget {
             //image
             Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+                  // horizontal: 24,
+                  // vertical: 12,
                 ),
               child: CachedNetworkImage(
                 imageUrl: dotenv.env['API_BACK']! + '/../images/' + image,
@@ -164,11 +164,15 @@ class MyCard extends StatelessWidget {
               ),
             ),
             // Agrega aquí los demás widgets que necesitas para tu tarjeta (título, subtítulo, imagen, etc.)
-            Text(
-              textCapitalization(title),
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
+            SingleChildScrollView(
+              child: Center(
+                child: Text(
+                  textCapitalization(title),
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 4),

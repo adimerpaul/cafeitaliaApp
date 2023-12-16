@@ -1,4 +1,5 @@
 import 'package:cafeitalia/components/MyCard.dart';
+import 'package:cafeitalia/components/MyDialog.dart';
 import 'package:cafeitalia/components/MyTab.dart';
 import 'package:cafeitalia/models/Category.dart';
 import 'package:cafeitalia/models/Products.dart';
@@ -96,16 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Total: Bs ${total}',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.redAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            MyDialog(
+              total: total,
             ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
@@ -265,8 +258,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(10),
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 1/1.2,
+                    crossAxisCount: 5,
+                    childAspectRatio: 1/1.4,
                     // childAspectRatio: 0.75,
                     // crossAxisSpacing: 24,
                     // mainAxisSpacing: 10,
