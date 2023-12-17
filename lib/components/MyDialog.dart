@@ -7,12 +7,14 @@ class MyDialog extends StatefulWidget {
   final double total;
   final int mesa;
   final List<Product> products;
-
+  //ejecutar metodo de padre
+  final VoidCallback? callback;
   const MyDialog({
     Key? key,
     required this.total,
     required this.mesa,
     required this.products,
+    this.callback,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class MyDialog extends StatefulWidget {
 }
 
 class _MyDialogState extends State<MyDialog> {
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -84,10 +87,28 @@ class _MyDialogState extends State<MyDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: (){
-                        ImportService().order(widget.mesa, widget.total, widget.products);
-                      },
-                      child: Text('Pagar'),
+                      onPressed: _isLoading ? null : submitOrder,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.greenAccent,
+                      ),
+                      child: _isLoading ? CircularProgressIndicator() :
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.payment,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                              'Pagar',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              )
+                          ),
+                        ],
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -111,5 +132,40 @@ class _MyDialogState extends State<MyDialog> {
         ),
       ),
     );
+  }
+
+  Future<void> submitOrder() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    BuildContext localContext = context; // Almacena una referencia local al contexto
+
+    try {
+      var result = await ImportService().order(widget.mesa, widget.total, widget.products);
+      if (result != null) {
+        ScaffoldMessenger.of(localContext).showSnackBar(
+          SnackBar(
+            content: Text('Pedido realizado con éxito'),
+            backgroundColor: Colors.greenAccent,
+          ),
+        );
+        Navigator.of(localContext).pop(); // Cierra el diálogo
+        widget.callback!(); // Ejecuta el método del padre
+      } else {
+        ScaffoldMessenger.of(localContext).showSnackBar(
+          SnackBar(
+            content: Text('Error al realizar el pedido'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

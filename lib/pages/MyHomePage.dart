@@ -109,7 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
             MyDialog(
               total: total,
               mesa: selectedMesa+1,
-              products: productConCarrito(products)
+              products: productConCarrito(products),
+              callback: () {
+                setState(() {
+                  products.forEach((element) {
+                    element.cantidadCarrito = 0;
+                  });
+                  cantidadPedida();
+                });
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
@@ -284,12 +292,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                       },
                       child: MyCard(
+                        index: index,
                         title: products[index].name,
                         subtitle: products[index].categoryName,
                         image: products[index].imagen,
                         price: products[index].price.toString(),
                         color: products[index].color,
                         cantidadCarrito: products[index].cantidadCarrito,
+                        callbackMinus: (){
+                          setState(() {
+                            products[index].cantidadCarrito--;
+                            cantidadPedida();
+                          });
+                        },
                       ),
                     );
                   },

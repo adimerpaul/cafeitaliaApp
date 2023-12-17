@@ -3,21 +3,25 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 class MyCard extends StatelessWidget {
   final double radius = 12;
+  final int index;
   final String title;
   final String subtitle;
   final String image;
   final String price;
   final String color;
   final int cantidadCarrito;
+  final VoidCallback? callbackMinus;
 
   const MyCard({
     Key? key,
+    required this.index,
     required this.title,
     required this.subtitle,
     required this.image,
     required this.price,
     required this.color,
     required this.cantidadCarrito,
+    this.callbackMinus,
   }) : super(key: key);
 
   Color getContainerColorFromString(String colorName) {
@@ -95,24 +99,35 @@ class MyCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 cantidadCarrito == 0 ? Container() :
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.yellowAccent, // Color con opacidad diferente
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(radius),
-                      topLeft: Radius.circular(radius),
-                    ),
-                  ),
-                  // padding: EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '$cantidadCarrito',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: callbackMinus,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellowAccent, // Color con opacidad diferente
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(radius),
+                        topLeft: Radius.circular(radius),
                       ),
+                    ),
+                    // padding: EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '$cantidadCarrito',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.remove_circle_outline,
+                          color: Colors.redAccent,
+                        )
+                      ],
                     ),
                   ),
                 ),

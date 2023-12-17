@@ -56,7 +56,8 @@ class ImportService{
           'detail': json.encode(productsJson),
         }
     );
-    if(response.statusCode == 200){
+
+    if(response.statusCode == 201){
       return response.body;
     }else{
       throw Exception('Error al importar');
