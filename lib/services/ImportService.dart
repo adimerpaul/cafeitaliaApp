@@ -44,4 +44,22 @@ class ImportService{
       throw Exception('Error al importar');
     }
   }
+  Future order(int mesa, double total, List<Product> products) async{
+    var uri = Uri.parse(API_BACK! + '/order');
+    var productsJson = products.map((product) => product.toJson()).toList();
+
+    var response = await http.post(uri,
+        headers: {'Accept': 'application/json'},
+        body: {
+          'mesa': mesa.toString(),
+          'total': total.toString(),
+          'detail': json.encode(productsJson),
+        }
+    );
+    if(response.statusCode == 200){
+      return response.body;
+    }else{
+      throw Exception('Error al importar');
+    }
+  }
 }

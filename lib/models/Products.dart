@@ -33,4 +33,17 @@ class Product {
     required this.color,
     required this.cantidadCarrito,
   });
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'imagen': imagen,
+      'cantidad': cantidad,
+      'category_id': category_id,
+      'categoryName': categoryName,
+      'color': color,
+      'cantidadCarrito': cantidadCarrito,
+    };
+  }
 }

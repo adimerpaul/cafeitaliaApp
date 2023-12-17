@@ -1,3 +1,4 @@
+import 'package:cafeitalia/services/ImportService.dart';
 import 'package:flutter/material.dart';
 
 import '../models/Products.dart';
@@ -83,7 +84,9 @@ class _MyDialogState extends State<MyDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        ImportService().order(widget.mesa, widget.total, widget.products);
+                      },
                       child: Text('Pagar'),
                     ),
                     TextButton(
