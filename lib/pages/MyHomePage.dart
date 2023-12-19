@@ -291,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         setState(() {
                           products[index].cantidadCarrito++;
-                          productsAll[index].cantidadCarrito++;
+                          //productsAll[index].cantidadCarrito++;
                           cantidadPedida();
                         });
                       },
