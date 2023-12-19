@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   cantidadPedida(){
     cartItems = 0;
     total = 0;
-    products.forEach((element) {
+    productsAll.forEach((element) {
       cartItems += element.cantidadCarrito;
       total += element.cantidadCarrito * element.price;
     });
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
             MyDialog(
               total: total,
               mesa: selectedMesa+1,
-              products: productConCarrito(products),
+              products: productConCarrito(productsAll),
               callback: () {
                 setState(() {
                   products.forEach((element) {
@@ -222,6 +222,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           products.forEach((element) {
                             element.cantidadCarrito = 0;
                           });
+                          productsAll.forEach((element) {
+                            element.cantidadCarrito = 0;
+                          });
                           cantidadPedida();
                         });
                       },
@@ -288,6 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         setState(() {
                           products[index].cantidadCarrito++;
+                          productsAll[index].cantidadCarrito++;
                           cantidadPedida();
                         });
                       },
