@@ -100,7 +100,7 @@ class _MyDialogState extends State<MyDialog> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                              'Pagar',
+                              'Pedido',
                               style: TextStyle(
                                 fontSize: 24,
                                 color: Colors.white,

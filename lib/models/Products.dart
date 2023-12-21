@@ -21,7 +21,8 @@ class Product {
   final String color;
   @HiveField(8)
   int cantidadCarrito = 0;
-
+  @HiveField(9)
+  String llevar = 'NO';
   Product({
     required this.id,
     required this.name,
@@ -32,6 +33,7 @@ class Product {
     required this.categoryName,
     required this.color,
     required this.cantidadCarrito,
+    required this.llevar,
   });
   Map<String, dynamic> toJson() {
     return {

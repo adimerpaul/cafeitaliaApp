@@ -41,22 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   initState() {
-    // TODO: implement initState
     super.initState();
     getDatos();
   }
   getDatos() async {
     var categoriesBox = await Hive.openBox<Category>('categories');
     categories = categoriesBox.values.toList();
-    tabs.clear();
-    tabs.add(
-      MyTab(icon: 'checkCircle'),
-    );
-    categories.forEach((category) {
-      tabs.add(
-        MyTab(icon: category.icon),
-      );
-    });
     var productsBox = await Hive.openBox<Product>('products');
     products = productsBox.values.toList();
     products.sort((a, b) => a.category_id.compareTo(b.category_id));
@@ -92,9 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           elevation: 0,
           leading: Padding(
@@ -154,25 +142,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(10, (index) {
-                    return TextButton(
-                      onPressed: () {
-                        // print(index);
-                        setState(() {
-                          selectedMesa = index;
-                        });
-                      },
-                      child: Text(
-                        'Mesa ${index + 1}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: selectedMesa == index ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.bold,
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedMesa = index;
+                          });
+                        },
+                        child: Text(
+                          'M${index + 1}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: selectedMesa == index ? Colors.white : Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: selectedMesa == index ? Colors.purple : Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        style: ElevatedButton.styleFrom(
+                          primary: selectedMesa == index ? Colors.purple : Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
                       ),
                     );
@@ -188,7 +178,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     'Categoria ',
                     style: TextStyle(
                       fontSize: 18,
-                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
@@ -247,76 +236,95 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 24),
-            TabBar(
-              onTap: (index) {
-                final i= index-1;
-                if(i == -1){
-                    textCategory = 'TODO';
-                    category_id = 0;
-                }else{
-                  textCategory = categories[i].name;
-                  category_id = categories[i].id;
-                }
-                filtrarCategoria(category_id);
-                setState(() {});
-              },
-              tabs: tabs,
-              labelColor: Colors.purple,
-              unselectedLabelColor: Colors.grey[400],
-              indicatorColor: Colors.purple,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 4,
-              labelStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             Expanded(
-                child: GridView.builder(
+                child: ListView.builder(
                   padding: EdgeInsets.all(10),
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
-                    childAspectRatio: 1/1.4,
-                    // childAspectRatio: 0.75,
-                    // crossAxisSpacing: 24,
-                    // mainAxisSpacing: 10,
-                  ),
+                  itemCount: categories.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        setState(() {
-                          products[index].cantidadCarrito++;
-                          //productsAll[index].cantidadCarrito++;
-                          cantidadPedida();
-                        });
-                      },
-                      child: MyCard(
-                        index: index,
-                        title: products[index].name,
-                        subtitle: products[index].categoryName,
-                        image: products[index].imagen,
-                        price: products[index].price.toString(),
-                        color: products[index].color,
-                        cantidadCarrito: products[index].cantidadCarrito,
-                        callbackMinus: (){
-                          setState(() {
-                            products[index].cantidadCarrito--;
-                            cantidadPedida();
-                          });
-                        },
-                      ),
+                    return Column(
+                      children: [
+                        Text(
+                          categories[index].name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.all(10),
+                          itemCount: products.length,
+                          itemBuilder: (context, index2) {
+                            if(products[index2].category_id == categories[index].id){
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    products[index2].cantidadCarrito++;
+                                    cantidadPedida();
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          products[index2].name,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        if(products[index2].cantidadCarrito > 0)
+                                          Text(
+                                            '${products[index2].cantidadCarrito}',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.blueAccent
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    // SizedBox(height: 1),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Precio: Bs'+products[index2].price.toStringAsFixed(2),
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${(products[index2].cantidadCarrito * products[index2].price).toStringAsFixed(2)} Bs',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: products[index2].cantidadCarrito > 0 ? Colors.redAccent : Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
+                      ],
                     );
                   },
                 )
             )
           ],
         ),
-      ),
-    );
+      );
   }
 }
