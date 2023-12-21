@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(8, (index) {
+                  children: List.generate(10, (index) {
                     return TextButton(
                       onPressed: () {
                         // print(index);
