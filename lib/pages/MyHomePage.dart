@@ -28,6 +28,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Product> productsAll = [];
   List<Widget> tabs = [];
   int selectedMesa = 0;
+  String searchTerm = '';
+  TextEditingController searchController = TextEditingController();
   import() async {
     setState(() {
       _loading = true;
@@ -78,6 +80,17 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
     return productsCarrito;
+  }
+  void filtrarProductosPorNombre() {
+    if (searchTerm.isEmpty) {
+      // Si el término de búsqueda está vacío, mostrar todos los productos
+      products = productsAll;
+    } else {
+      // Filtrar productos por el nombre que contiene el término de búsqueda
+      products = productsAll.where((product) =>
+          product.name.toLowerCase().contains(searchTerm)).toList();
+    }
+    setState(() {});
   }
 
   @override
@@ -136,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -175,13 +188,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 children: [
                   Text(
-                    'Categoria ',
+                    'Productos ',
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    textCategory,
+                    '(${productsAll.length})',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -207,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ElevatedButton(
                       onPressed: (){
                         setState(() {
+                          searchTerm = '';
                           filtrarCategoria(0);
                           products.forEach((element) {
                             element.cantidadCarrito = 0;
@@ -236,9 +250,37 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
+              child: TextField(
+                controller: searchController, // Asigna el controlador al TextField
+                onChanged: (value) {
+                  setState(() {
+                    searchTerm = value.toLowerCase();
+                    filtrarProductosPorNombre();
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Buscar producto',
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: searchController.text.isNotEmpty
+                      ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        searchTerm = '';
+                        searchController.clear(); // Limpia el controlador
+                        filtrarProductosPorNombre();
+                      });
+                    },
+                    icon: Icon(Icons.clear),
+                  )
+                      : null,
+                ),
+              ),
+            ),
             Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(left: 24, right: 24),
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     return Column(

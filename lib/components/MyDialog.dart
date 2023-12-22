@@ -68,8 +68,22 @@ class _MyDialogState extends State<MyDialog> {
                   itemBuilder: (BuildContext context, int index) {
                     Product product = widget.products[index];
                     return ListTile(
-                      title: Text(product.name+' - '+product.price.toString()+ ' Bs'),
-                      subtitle: Text('Cantidad: ${product.cantidadCarrito}'),
+                      title: Text(
+                          product.name+' - '+product.price.toString()+ ' Bs',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
+                      subtitle: Text(
+                          'Cantidad: ${product.cantidadCarrito}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
                       trailing: Text(
                           'Bs ${product.price * product.cantidadCarrito}',
                           style: TextStyle(
