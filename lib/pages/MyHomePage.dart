@@ -93,10 +93,11 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
   void MyChangeLlevar(int index) {
-    print(index);
+    // print(index);
     setState(() {
       products[index].llevar = products[index].llevar == 'SI' ? 'NO' : 'SI';
     });
+    //abiri el dialog
   }
 
   @override
@@ -113,19 +114,41 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
-            MyDialog(
-              total: total,
-              mesa: selectedMesa + 1,
-              products: productConCarrito(productsAll),
-              callback: () {
-                setState(() {
-                  products.forEach((element) {
-                    element.cantidadCarrito = 0;
-                  });
-                  cantidadPedida();
-                });
-              },
-              changeLlevar: MyChangeLlevar
+            TextButton(
+            onPressed: () {
+              showDialog(
+              context: context,
+                builder: (BuildContext context) {
+                  return MyDialog(
+                      total: total,
+                      mesa: selectedMesa + 1,
+                      products: productConCarrito(productsAll),
+                      callback: () {
+                        setState(() {
+                          products.forEach((element) {
+                            element.cantidadCarrito = 0;
+                            element.llevar = 'NO';
+                          });
+                          productsAll.forEach((element) {
+                            element.cantidadCarrito = 0;
+                            element.llevar = 'NO';
+                          });
+                          cantidadPedida();
+                        });
+                      },
+                      changeLlevar: MyChangeLlevar
+                  );
+                }
+              );
+            },
+              child: Text(
+                'Total: Bs ${total}',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
@@ -231,9 +254,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           filtrarCategoria(0);
                           products.forEach((element) {
                             element.cantidadCarrito = 0;
+                            element.llevar = 'NO';
                           });
                           productsAll.forEach((element) {
                             element.cantidadCarrito = 0;
+                            element.llevar = 'NO';
                           });
                           cantidadPedida();
                         });

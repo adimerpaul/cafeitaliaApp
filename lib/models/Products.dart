@@ -46,6 +46,7 @@ class Product {
       'categoryName': categoryName,
       'color': color,
       'cantidadCarrito': cantidadCarrito,
+      'llevar': llevar,
     };
   }
 }

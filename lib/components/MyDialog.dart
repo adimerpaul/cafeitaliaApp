@@ -27,140 +27,130 @@ class _MyDialogState extends State<MyDialog> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        // print(widget.products.length);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
+    return AlertDialog(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Mesa',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '#${widget.mesa}',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            'Bs ${widget.total}',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.redAccent,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
+      ),
+      content: Container(
+        width: double.maxFinite,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: widget.products.length,
+          itemBuilder: (BuildContext context, int index) {
+            Product product = widget.products[index];
+            return ListTile(
               title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Text(widget.products[index].llevar),
+                  DropdownButton<String>(
+                    value: widget.products[index].llevar, // Valor actual del ComboBox
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.products[index].llevar = newValue ?? 'NO'; // Actualiza el valor del estado
+                        // widget.changeLlevar?.call(index); // Llama a la función de cambio
+                        // Navigator.of(context).pop(); // Cierra el diálogo
+                      });
+                    },
+                    items: <String>['SI', 'NO'] // Opciones del ComboBox
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                   Text(
-                    'Mesa',
+                    '${product.name} - ${product.price.toString()} Bs',
                     style: TextStyle(
                       fontSize: 18,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    '#${widget.mesa}',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.deepPurple,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Bs ${widget.total}',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
                 ],
               ),
-              content: Container(
-                width: double.maxFinite,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Product product = widget.products[index];
-                    return ListTile(
-                      title: Row(
-                        children: [
-                          Checkbox(
-                            value: widget.products[index].llevar == 'SI' ? true : false,
-                            onChanged: (bool? value) {
-                              // widget.callback!();
-                              // setState(() {
-                              //   widget.products[index].llevar = value! ? 'SI' : 'NO';
-                              widget.changeLlevar?.call(index);
-                              // });
-                            },
-                          ),
-                          Text(
-                            '${product.name} - ${product.price.toString()} Bs',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      subtitle: Text(
-                          'Cantidad: ${product.cantidadCarrito}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.bold,
-                          )
-                      ),
-                      trailing: Text(
-                          'Bs ${product.price * product.cantidadCarrito}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold,
-                          )
-                      ),
-                    );
-                  },
-                ),
+              subtitle: Text(
+                  'Cantidad: ${product.cantidadCarrito}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
-              actions: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _isLoading ? null : submitOrder,
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.greenAccent,
-                      ),
-                      child: _isLoading ? CircularProgressIndicator() :
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.payment,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                              'Pedido',
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              )
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Cierra el diálogo
-                      },
-                      child: Text('Cerrar'),
-                    ),
-                  ],
-                ),
-              ],
+              trailing: Text(
+                  'Bs ${product.price * product.cantidadCarrito}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
             );
           },
-        );
-      },
-      child: Text(
-        'Total: Bs ${widget.total}',
-        style: TextStyle(
-          fontSize: 18,
-          color: Colors.redAccent,
-          fontWeight: FontWeight.bold,
         ),
       ),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              onPressed: _isLoading ? null : submitOrder,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.greenAccent,
+              ),
+              child: _isLoading ? CircularProgressIndicator() :
+              Row(
+                children: [
+                  Icon(
+                    Icons.payment,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                      'Pedido',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      )
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -176,7 +166,7 @@ class _MyDialogState extends State<MyDialog> {
       if (result != null) {
         ScaffoldMessenger.of(localContext).showSnackBar(
           SnackBar(
-            content: Text('Pedido realizado con éxito'),
+            content: Text('Se hizo el pedido para la Mesa: ${widget.mesa}'),
             backgroundColor: Colors.greenAccent,
           ),
         );
