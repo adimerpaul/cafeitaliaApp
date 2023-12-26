@@ -9,12 +9,14 @@ class MyDialog extends StatefulWidget {
   final List<Product> products;
   //ejecutar metodo de padre
   final VoidCallback? callback;
+  final void Function(int)? changeLlevar;
   const MyDialog({
     Key? key,
     required this.total,
     required this.mesa,
     required this.products,
     this.callback,
+    required this.changeLlevar,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class _MyDialogState extends State<MyDialog> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        print(widget.products.length);
+        // print(widget.products.length);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -68,13 +70,27 @@ class _MyDialogState extends State<MyDialog> {
                   itemBuilder: (BuildContext context, int index) {
                     Product product = widget.products[index];
                     return ListTile(
-                      title: Text(
-                          product.name+' - '+product.price.toString()+ ' Bs',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          )
+                      title: Row(
+                        children: [
+                          Checkbox(
+                            value: widget.products[index].llevar == 'SI' ? true : false,
+                            onChanged: (bool? value) {
+                              // widget.callback!();
+                              // setState(() {
+                              //   widget.products[index].llevar = value! ? 'SI' : 'NO';
+                              widget.changeLlevar?.call(index);
+                              // });
+                            },
+                          ),
+                          Text(
+                            '${product.name} - ${product.price.toString()} Bs',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       subtitle: Text(
                           'Cantidad: ${product.cantidadCarrito}',

@@ -92,6 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     setState(() {});
   }
+  void MyChangeLlevar(int index) {
+    print(index);
+    setState(() {
+      products[index].llevar = products[index].llevar == 'SI' ? 'NO' : 'SI';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: [
             MyDialog(
               total: total,
-              mesa: selectedMesa+1,
+              mesa: selectedMesa + 1,
               products: productConCarrito(productsAll),
               callback: () {
                 setState(() {
@@ -119,6 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   cantidadPedida();
                 });
               },
+              changeLlevar: MyChangeLlevar
             ),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
