@@ -64,4 +64,16 @@ class ImportService{
       throw Exception('Error al importar');
     }
   }
+  Future<List> orderPending() async{
+    var uri = Uri.parse(API_BACK! + '/orderPending');
+    var response = await http.get(uri,
+        headers: {'Accept': 'application/json'},
+    );
+    if(response.statusCode == 200){
+      final jsonRes = json.decode(response.body);
+      return jsonRes;
+    }else{
+      throw Exception('Error al importar');
+    }
+  }
 }

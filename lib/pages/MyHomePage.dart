@@ -3,6 +3,7 @@ import 'package:cafeitalia/components/MyDialog.dart';
 import 'package:cafeitalia/components/MyTab.dart';
 import 'package:cafeitalia/models/Category.dart';
 import 'package:cafeitalia/models/Products.dart';
+import 'package:cafeitalia/pages/PedidoPage.dart';
 import 'package:cafeitalia/services/ImportService.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
@@ -114,6 +115,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.purple,
+                ),
+                onPressed: (){
+                  //ir a pagina de pedido
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PedidoPage(products: productConCarrito(productsAll))),
+                  );
+                },
+                child: Text(
+                  'Ver pedidos',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+            ),
             TextButton(
             onPressed: () {
               showDialog(

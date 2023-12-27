@@ -115,38 +115,42 @@ class _MyDialogState extends State<MyDialog> {
         ),
       ),
       actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
           children: [
-            ElevatedButton(
-              onPressed: _isLoading ? null : submitOrder,
-              style: ElevatedButton.styleFrom(
-                primary: Colors.greenAccent,
-              ),
-              child: _isLoading ? CircularProgressIndicator() :
-              Row(
-                children: [
-                  Icon(
-                    Icons.payment,
-                    color: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: _isLoading ? null : submitOrder,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.greenAccent,
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                      'Pedido',
-                      style: TextStyle(
-                        fontSize: 24,
+                  child: _isLoading ? CircularProgressIndicator() :
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.payment,
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      )
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                          'Pedido',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
-              },
-              child: Text('Cerrar'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Cierra el diálogo
+                  },
+                  child: Text('Cerrar'),
+                ),
+              ],
             ),
           ],
         ),
