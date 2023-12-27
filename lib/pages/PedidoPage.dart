@@ -54,7 +54,7 @@ class _PedidoPageState extends State<PedidoPage> {
                 // Puedes personalizar esto según la estructura real de tus datos
                 return ListTile(
                   title: Text(
-                    'Mesa #${orderPending[index]['mesa']} - Total: Bs ${orderPending[index]['total']}',
+                    '${orderPending[index]['id']} Mesa #${orderPending[index]['mesa']} - Total: Bs ${orderPending[index]['total']}',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
