@@ -144,6 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       total: total,
                       mesa: selectedMesa + 1,
                       products: productConCarrito(productsAll),
+                      order_id: 0,
                       callback: () {
                         setState(() {
                           products.forEach((element) {

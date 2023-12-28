@@ -7,9 +7,10 @@ class MyDialog extends StatefulWidget {
   final double total;
   final int mesa;
   final List<Product> products;
-  //ejecutar metodo de padre
   final VoidCallback? callback;
   final void Function(int)? changeLlevar;
+  final int order_id;
+
   const MyDialog({
     Key? key,
     required this.total,
@@ -17,6 +18,7 @@ class MyDialog extends StatefulWidget {
     required this.products,
     this.callback,
     required this.changeLlevar,
+    required this.order_id,
   }) : super(key: key);
 
   @override
@@ -166,23 +168,44 @@ class _MyDialogState extends State<MyDialog> {
     BuildContext localContext = context; // Almacena una referencia local al contexto
 
     try {
-      var result = await ImportService().order(widget.mesa, widget.total, widget.products);
-      if (result != null) {
-        ScaffoldMessenger.of(localContext).showSnackBar(
-          SnackBar(
-            content: Text('Se hizo el pedido para la Mesa: ${widget.mesa}'),
-            backgroundColor: Colors.greenAccent,
-          ),
-        );
-        Navigator.of(localContext).pop(); // Cierra el diálogo
-        widget.callback!(); // Ejecuta el método del padre
-      } else {
-        ScaffoldMessenger.of(localContext).showSnackBar(
-          SnackBar(
-            content: Text('Error al realizar el pedido'),
-            backgroundColor: Colors.redAccent,
-          ),
-        );
+      if( widget.order_id == 0 ){
+        var result = await ImportService().order(widget.mesa, widget.total, widget.products);
+        if (result != null) {
+          ScaffoldMessenger.of(localContext).showSnackBar(
+            SnackBar(
+              content: Text('Se hizo el pedido para la Mesa: ${widget.mesa}'),
+              backgroundColor: Colors.greenAccent,
+            ),
+          );
+          Navigator.of(localContext).pop(); // Cierra el diálogo
+          widget.callback!(); // Ejecuta el método del padre
+        } else {
+          ScaffoldMessenger.of(localContext).showSnackBar(
+            SnackBar(
+              content: Text('Error al realizar el pedido'),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
+      }else{
+        var result = await ImportService().aumentarPedido(widget.order_id, widget.products);
+        if (result != null) {
+          ScaffoldMessenger.of(localContext).showSnackBar(
+            SnackBar(
+              content: Text('Se hizo el pedido para la Mesa: ${widget.mesa}'),
+              backgroundColor: Colors.greenAccent,
+            ),
+          );
+          Navigator.of(localContext).pop(); // Cierra el diálogo
+          widget.callback!(); // Ejecuta el método del padre
+        } else {
+          ScaffoldMessenger.of(localContext).showSnackBar(
+            SnackBar(
+              content: Text('Error al realizar el pedido'),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
       }
     } catch (e) {
       print('Error: $e');

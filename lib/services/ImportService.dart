@@ -64,6 +64,25 @@ class ImportService{
       throw Exception('Error al importar');
     }
   }
+  //aumentarPedido
+  Future aumentarPedido(int id, List<Product> products) async{
+    var uri = Uri.parse(API_BACK! + '/aumentarPedido');
+    var productsJson = products.map((product) => product.toJson()).toList();
+    var response = await http.post(uri,
+        headers: {'Accept': 'application/json'},
+        body: {
+          'id': id.toString(),
+          'detail': json.encode(productsJson),
+        }
+    );
+    if(response.statusCode == 201){
+      return response.body;
+    }else{
+      throw Exception('Error al importar');
+    }
+  }
+
+
   Future<List> orderPending() async{
     var uri = Uri.parse(API_BACK! + '/orderPending');
     var response = await http.get(uri,

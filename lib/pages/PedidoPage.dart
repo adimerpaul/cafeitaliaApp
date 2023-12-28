@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/MyDialog.dart';
 import '../models/Products.dart';
 import '../services/ImportService.dart';
 
@@ -29,6 +30,13 @@ class _PedidoPageState extends State<PedidoPage> {
       orderPending = orders;
       print(orderPending);
     });
+  }
+  void MyChangeLlevar(int index) {
+    // print(index);
+    // setState(() {
+    //   products[index].llevar = products[index].llevar == 'SI' ? 'NO' : 'SI';
+    // });
+    //abiri el dialog
   }
   @override
   Widget build(BuildContext context) {
@@ -69,9 +77,22 @@ class _PedidoPageState extends State<PedidoPage> {
                   ),
                   // Agrega más información según sea necesario
                   onTap: () {
-                    // Implementa la lógica para agregar productos a este pedido pendiente
-                    // Puedes abrir otro diálogo o realizar la acción deseada
-                    // ...
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MyDialog(
+                              total: 0,
+                              mesa: 0,
+                              products: widget.products,
+                              order_id: orderPending[index]['id'],
+                              callback: () {
+                                // Actualiza la lista de pedidos pendientes
+                                getOrdersPending();
+                              },
+                              changeLlevar: MyChangeLlevar
+                          );
+                        }
+                    );
                   },
                 );
               },
